@@ -1,15 +1,15 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class ArrowController : MonoBehaviour
 {
     public float arrowSpeed = 15f;
     private Vector3 targetDirection;
-    private GameManager gameManager; // GameManager¸¦ ÂüÁ¶ÇÏ±â À§ÇÑ º¯¼ö
+    private GameManager gameManager; // GameManagerë¥¼ ì°¸ì¡°í•˜ê¸° ìœ„í•œ ë³€ìˆ˜
 
-    void Start()
+Â  Â  void Start()
     {
-        // GameManager ¿ÀºêÁ§Æ®¸¦ Ã£¾Æ ½ºÅ©¸³Æ®¸¦ °¡Á®¿È
-        gameManager = FindObjectOfType<GameManager>();
+Â  Â  Â  Â  // GameManager ì˜¤ë¸Œì íŠ¸ë¥¼ ì°¾ì•„ ìŠ¤í¬ë¦½íŠ¸ë¥¼ ê°€ì ¸ì˜´
+Â  Â  Â  Â  gameManager = FindObjectOfType<GameManager>();
     }
 
     public void SetTargetDirection(Vector3 direction)
@@ -28,7 +28,8 @@ public class ArrowController : MonoBehaviour
         {
             if (gameManager != null)
             {
-                gameManager.GameOver();
+                // trueë¥¼ ë„˜ê²¨ì„œ í”Œë ˆì´ì–´ê°€ 'íŒ¨ë°°'í–ˆìŒì„ ì•Œë¦¼
+                gameManager.GameOver(false);
             }
             Destroy(gameObject);
         }

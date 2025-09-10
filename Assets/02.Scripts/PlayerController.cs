@@ -2,33 +2,57 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // 플레이어의 이동 속도
     public float moveSpeed = 5.0f;
+    private Rigidbody rb;
+    private GameManager gameManager;
 
-    void OnTriggerEnter(Collider other)
+    void Start()
     {
-        // 충돌한 오브젝트의 태그가 "Food"인지 확인
-        if (other.CompareTag("Food"))
-        {
-            // 플레이어 크기 키우기
-            GrowPlayer();
-        }
+        rb = GetComponent<Rigidbody>();
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     void Update()
     {
-        // 키보드 입력 받기
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        // 수평축과 수직축의 입력값을 감지하여 저장
+        float xInput = Input.GetAxis("Horizontal");
+        float zInput = Input.GetAxis("Vertical");
 
-        // 이동 방향 벡터 계산
-        Vector3 moveDirection = new Vector3(h, 0, v);
-        transform.Translate(moveDirection * moveSpeed * Time.deltaTime, Space.World);
+        // 실제 이동 속도를 입력값과 이동 속력을 통해 결정
+        float xSpeed = xInput * moveSpeed;
+        float zSpeed = zInput * moveSpeed;
+
+        // Vector3 속도를 (xSpeed, 0f, zSpeed)로 생성
+        Vector3 newVelocity = new Vector3(xSpeed, 0f, zSpeed);
+        // 리지드바디의 속도에 newVeclocity 할당
+        rb.linearVelocity = newVelocity;
     }
 
-    public void GrowPlayer()
+    void OnTriggerEnter(Collider other)
     {
-        Vector3 currentScale = transform.localScale;
-        transform.localScale = currentScale + new Vector3(0.1f, 0.1f, 0.1f);
+        if (other.CompareTag("FinishZone"))
+        {
+            if (gameManager != null)
+            {
+                gameManager.GameOver(true);
+            }
+        }
     }
+
+    //void FixedUpdate()
+    //{
+    //    float h = Input.GetAxis("Horizontal");
+    //    float v = Input.GetAxis("Vertical");
+
+    //    Vector3 moveDirection = new Vector3(h, 0, v);
+
+    //    // 이동 방향이 0이 아닐 때만 플레이어의 방향을 회전
+    //    if (moveDirection != Vector3.zero)
+    //    {
+    //        // 이동 방향을 바라보게 함 (Y축만 회전)
+    //        transform.LookAt(transform.position + moveDirection);
+    //    }
+
+    //    rb.MovePosition(rb.position + moveDirection * moveSpeed * Time.fixedDeltaTime);
+    //}
 }

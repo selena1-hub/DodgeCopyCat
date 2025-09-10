@@ -30,13 +30,17 @@ public class CameraManager : MonoBehaviour
             cameras[currentCameraIndex].SetActive(true);
         }
 
-        // 카메라가 플레이어를 따라가게 함 (1인칭 카메라는 제외)
-        if (currentCameraIndex != 0) // 0번 인덱스(FPS Camera)가 아닐 경우
+        // --- 이 부분에 null 체크를 추가합니다 ---
+        if (target != null)
         {
-            // 플레이어의 위치와 카메라의 거리를 기반으로 새로운 위치 계산
-            Vector3 newPosition = target.position - (transform.forward * distance);
-            // 카메라의 위치를 부드럽게 업데이트
-            transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * 5f);
+            // 카메라가 플레이어를 따라가게 함 (1인칭 카메라는 제외)
+            if (currentCameraIndex != 0) // 0번 인덱스(FPS Camera)가 아닐 경우
+            {
+                // 플레이어의 위치와 카메라의 거리를 기반으로 새로운 위치 계산
+                Vector3 newPosition = target.position - (transform.forward * distance);
+                // 카메라의 위치를 부드럽게 업데이트
+                transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * 5f);
+            }
         }
     }
 }
