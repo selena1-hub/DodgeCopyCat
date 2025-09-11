@@ -22,6 +22,7 @@ public class PoliceCarSpawner : MonoBehaviour
         PoliceCarAI policeCarAI = newPoliceCar.GetComponent<PoliceCarAI>();
         if (policeCarAI != null)
         {
+            // 플레이어의 Transform을 추적 대상으로 설정
             policeCarAI.SetTarget(playerTransform);
         }
     }

@@ -24,35 +24,37 @@ public class PlayerController : MonoBehaviour
 
         // Vector3 속도를 (xSpeed, 0f, zSpeed)로 생성
         Vector3 newVelocity = new Vector3(xSpeed, 0f, zSpeed);
-        // 리지드바디의 속도에 newVeclocity 할당
+        if (newVelocity != Vector3.zero)
+        {
+            transform.forward = Vector3.Lerp(transform.forward, newVelocity, 0.1f);
+        }
+
+        // 리지드바디의 속도에 newVelocity 할당
         rb.linearVelocity = newVelocity;
     }
 
+    // --- 이 부분이 Update() 함수 밖으로 나와야 합니다 ---
     void OnTriggerEnter(Collider other)
     {
+        // 닿은 물체의 태그가 "FinishZone"인지 확인
         if (other.CompareTag("FinishZone"))
         {
             if (gameManager != null)
             {
+                // 게임 매니저의 GameOver 함수를 호출하고 승리(true)를 전달
                 gameManager.GameOver(true);
             }
         }
     }
 
-    //void FixedUpdate()
-    //{
-    //    float h = Input.GetAxis("Horizontal");
-    //    float v = Input.GetAxis("Vertical");
-
-    //    Vector3 moveDirection = new Vector3(h, 0, v);
-
-    //    // 이동 방향이 0이 아닐 때만 플레이어의 방향을 회전
-    //    if (moveDirection != Vector3.zero)
-    //    {
-    //        // 이동 방향을 바라보게 함 (Y축만 회전)
-    //        transform.LookAt(transform.position + moveDirection);
-    //    }
-
-    //    rb.MovePosition(rb.position + moveDirection * moveSpeed * Time.fixedDeltaTime);
-    //}
+    public void Die()
+    {
+        if (gameManager != null)
+        {
+            // false를 넘겨서 플레이어가 '패배'했음을 알림
+            gameManager.GameOver(false);
+        }
+        // 플레이어 오브젝트를 비활성화해서 화면에서 사라지게 함
+        gameObject.SetActive(false);
+    }
 }

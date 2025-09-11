@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 public class PoliceCarAI : MonoBehaviour
 {
     private Transform target;
@@ -28,15 +29,15 @@ public class PoliceCarAI : MonoBehaviour
     // 다른 콜라이더와 접촉했을 때 호출되는 함수
     void OnTriggerEnter(Collider other)
     {
-        // 접촉한 오브젝트가 "Player" 태그를 가졌다면
-        if (other.CompareTag("Player"))
+        // If the collided object has the "Player" tag
+        if (other.tag == "Player")
         {
-            if (gameManager != null)
+            PlayerController playerController = other.GetComponent<PlayerController>();
+            if (playerController != null)
             {
-                gameManager.GameOver(false); // 패배 처리
+                // Call the Die() method on the specific playerController instance
+                playerController.Die();
             }
-            // 플레이어 오브젝트를 파괴하여 화면에서 사라지게 함
-            Destroy(other.gameObject);
         }
     }
 }
